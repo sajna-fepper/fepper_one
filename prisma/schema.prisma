@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Fepper {
+model User {
   id       Int   @id @db.UnsignedInt  @default(autoincrement())
   name     String @db.VarChar(191)
   email     String ? @db.VarChar(191)
@@ -22,9 +22,34 @@ model Fepper {
   phone String  @unique @db.VarChar(191)
   default_address_id Int ? @default(0)
   delivery_pin String ?
-  delivery_guy_detail_id Int ?
+  deliveryboy   Deliveryguydetails @relation(fields: [delivery_guy_detail_id], references: [id])
+  delivery_guy_detail_id Int  
   avatar String ? @db.Text()
   is_active Int @default(1) @db.TinyInt()
   tax_number String ?
   user_ip String ?
+  
+}
+
+model Deliveryguydetails{
+  id       Int   @id @db.UnsignedInt  @default(autoincrement()) 
+  name     String @db.VarChar(191)
+  age      String ?  @db.VarChar(191)
+  gender   String ?  @db.VarChar(191)
+  photo    String ?  @db.VarChar(191)
+  description String ?  @db.VarChar(191)
+  vehicle_number  String ?  @db.VarChar(191)
+  createdAt DateTime ? @default(now())
+  updatedAt DateTime ?  @updatedAt
+  commision_rate  Decimal @db.Decimal(8 ,2) @default(5)
+  is_notifiable Int ? @db.TinyInt @default(0)
+  max_accept_delivery_limit Int @default(100)
+  delivery_lat  String ?  @db.VarChar(191)
+  delivery_long  String ?  @db.VarChar(191)
+  heading  String ?  @db.VarChar(191)
+  tip_commision_rate  Decimal @default(100) @db.Decimal(8,2)
+  status Int @db.TinyInt @default(1)
+  post User[]
+  
+
 }

@@ -17,7 +17,7 @@ exports.createPost = async(req, res, next) => {
         tax_number,
         user_ip}  = req.body
     //validation on you
-    const result = await prisma.fepper.create({
+    const result = await prisma.user.create({
         data: {
             name,
             email,
@@ -44,7 +44,7 @@ exports.createPost = async(req, res, next) => {
 
 exports.getPost = async(req, res, next) => {
     try {
-    const result = await prisma.fepper.findMany()
+    const result = await prisma.user.findMany()
     res.json(result)
     } catch (error) {
         res.json ({error: `post with ${id} does not exist`})   
@@ -54,7 +54,7 @@ exports.getPost = async(req, res, next) => {
 //updating post on fepper
 
 exports.updatePost = async(req, res, next) => {
-    const {id} = req.params;
+    const {id} = req.body;
     const {name,
         email,
         password,
@@ -83,7 +83,7 @@ exports.updatePost = async(req, res, next) => {
         tax_number,
         user_ip}  = req.body
     
-    const result = await prisma.fepper.update({
+    const result = await prisma.user.update({
         where: {id: id},
         data: {
             name: name,
@@ -110,7 +110,7 @@ exports.updatePost = async(req, res, next) => {
 
 //delete a post from fepper
 exports.deletePost = async(req, res, next) => {
-    const {id} = req.params;
+    const {id} = req.body;
     const {name,
         email,
         password,
@@ -139,12 +139,15 @@ exports.deletePost = async(req, res, next) => {
         tax_number,
         user_ip}  = req.body
     
-    const result = await prisma.fepper.delete({
+    const result = await prisma.user.delete({
         where: {id: id}
     });
-    res.json(result)
+    res.json({status: true , message:`post with ${id} deleted successsfully`})
     
     } catch (error) {
         res.json ({error: `post with ${id} not exist`})   
     }
 }
+
+
+

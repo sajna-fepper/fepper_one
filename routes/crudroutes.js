@@ -4,13 +4,13 @@ const router = express.Router()
 const { createPost, updatePost, deletePost, getPost } = require('../controller/crud')
 
 
-router.route('/fepper/create').post(createPost)
+router.route('/user/create').post(createPost)
 
-router.route('/fepper/update/:id').post(updatePost)
+router.route('/user/update/:id').post(updatePost)
 
-router.route('/fepper/delete/:id').post(deletePost)
+router.route('/user/delete/:id').post(deletePost)
 
-router.route('/fepper/get').get(getPost)
+router.route('/user/get').get(getPost)
 
 
 

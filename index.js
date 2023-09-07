@@ -7,9 +7,11 @@ require('dotenv').config()
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
-const fepperRouter = require('./routes/crudroutes')
+const userRouter = require('./routes/crudroutes')
+const deliveryguydetailRouter = require('./routes/deliveryguyroutes')
 
-app.use('/api', fepperRouter)
+app.use('/api', userRouter)
+app.use('/api',deliveryguydetailRouter)
 
 
 app.get('/', (req, res) => {
