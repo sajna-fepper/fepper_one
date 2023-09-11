@@ -23,7 +23,7 @@ model User {
   default_address_id Int ? @default(0)
   delivery_pin String ?
   deliveryboy   Deliveryguydetails @relation(fields: [delivery_guy_detail_id], references: [id])
-  delivery_guy_detail_id Int  
+  delivery_guy_detail_id Int  @db.UnsignedInt @unique
   avatar String ? @db.Text()
   is_active Int @default(1) @db.TinyInt()
   tax_number String ?
@@ -49,7 +49,7 @@ model Deliveryguydetails{
   heading  String ?  @db.VarChar(191)
   tip_commision_rate  Decimal @default(100) @db.Decimal(8,2)
   status Int @db.TinyInt @default(1)
-  post User[]
+  post User ?
   
 
 }

@@ -1,6 +1,6 @@
 const prisma = require('../prisma/index')
 
-//create a new post on fepper
+//create a new post on deliveryguydetails
 
 exports.createPost = async(req, res, next) => {
     try {
@@ -19,9 +19,9 @@ exports.createPost = async(req, res, next) => {
         tip_commision_rate,
         status}  = req.body
     //validation on you
-    const result = await prisma.fepper.create({
+    const result = await prisma.deliveryguydetails.create({
         data: {
-            id,
+            
             name,
             age,
             gender,
@@ -44,11 +44,11 @@ exports.createPost = async(req, res, next) => {
     }
 }
 
-// get all post on fepper
+// get all post on deliveryguydetails
 
 exports.getPost = async(req, res, next) => {
     try {
-    const result = await prisma.fepper.findMany()
+    const result = await prisma.deliveryguydetails.findMany()
     res.json(result)
     } catch (error) {
         res.json ({error: `post with ${id} does not exist`})   
@@ -111,7 +111,7 @@ exports.updatePost = async(req, res, next) => {
     res.json(result)
     
     } catch (error) {
-        res.json ({error: `post with ${id} does not exist`})   
+        res.json ({error: error})   
     }
 }
 
@@ -158,3 +158,21 @@ exports.deletePost = async(req, res, next) => {
     }
 }
 
+//get user with delivery guyid
+exports.getuser = async(req, res, next) => {
+    try {
+const result = await prisma.deliveryguydetails.findMany({
+    where: {
+      id: "4"
+    },
+    include: {
+   post: true, // All posts where authorId == 20
+    },
+  });
+  res.json(result)
+    } catch (error) {
+        res.json ({error: error})   
+    }
+   
+
+}

@@ -11,7 +11,7 @@ CREATE TABLE `User` (
     `phone` VARCHAR(191) NOT NULL,
     `default_address_id` INTEGER NULL DEFAULT 0,
     `delivery_pin` VARCHAR(191) NULL,
-    `delivery_guy_detail_id` INTEGER NOT NULL,
+    `delivery_guy_detail_id` INTEGER UNSIGNED NOT NULL,
     `avatar` TEXT NULL,
     `is_active` TINYINT NOT NULL DEFAULT 1,
     `tax_number` VARCHAR(191) NULL,
