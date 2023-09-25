@@ -209,11 +209,12 @@ exports.deletePost = async(req, res, next) => {
     }
 }
 
+// get deliveryboyuser
 exports.getuser = async(req, res, next) => {
     try {
 const result = await prisma.user.findMany({
     where: {
-      delivery_guy_detail_id: 4
+      delivery_guy_detail_id: 1
     },
     include: {
    deliveryboy: true, // All posts where authorId == 20
@@ -223,11 +224,9 @@ const result = await prisma.user.findMany({
     } catch (error) {
         res.json ({error: error})   
     }
-   
-
 }
 
-
+// create deliveryboy user
     exports.createuserdel = async(req, res, next) => {
         try {
         const {name, 
@@ -244,7 +243,7 @@ const result = await prisma.user.findMany({
             tax_number,
             user_ip}  = req.body
         //validation on you
-        const result = await prisma.deliveryguydetails.create({
+        const result = await prisma.user.create({
             data: {
                 name: name,
                 email: email,
@@ -254,35 +253,30 @@ const result = await prisma.user.findMany({
                 phone: phone,
                 default_address_id: default_address_id,
                 delivery_pin: delivery_pin,
-                delivery_guy_detail_id:delivery_guy_detail_id,
                 avatar: avatar,
                 is_active: is_active,
                 tax_number: tax_number,
                 user_ip: user_ip,
             
             deliveryboy: {
-                create: [
-                  { name: "afthab",
-                    age: "20",
-                    gender: "male",
-                    photo:"dshg",
-                    description: "htydh",
-                    vehicle_number: "dgytu",
-                    commision_rate: 3.9,
-                    is_notifiable:  7,
-                    max_accept_delivery_limit: 10,
-                    delivery_lat: "nh",
-                    delivery_long:"kji",
-                    heading: "hbn",
-                    tip_commision_rate: 7.3,
-                    status: 1 },
-                ],
+                create: 
+                  { name: "shamil",
+                  age: "19",
+                  gender: "male",
+                  photo: "thfrr",
+                  description: "auth_tokenfgd",
+                  vehicle_number: "358182",
+                  commision_rate: 3.5,
+                  is_notifiable: 6,
+                  max_accept_delivery_limit: 6,
+                  delivery_lat: "afnr",
+                  delivery_long: "0",
+                  heading: "95",
+                  tip_commision_rate: 2.2,
+                  status:0},
+                
               },
             },
-            include:
-            {
-                deliveryboy: true
-            }
             
         })
         res.json(result)
@@ -291,3 +285,104 @@ const result = await prisma.user.findMany({
         }
     }
     
+//update deliveryboy user
+exports.updatedeluser = async(req, res, next) => {
+    try {    
+    const result = await prisma.user.update({
+        where: {
+            delivery_guy_detail_id: 2,
+        },
+    data: {
+      deliveryboy: {
+        update: {
+          where: {
+            id: 2,
+          },
+          data: {
+            gender: 'male',
+          },
+        },
+      },
+    },
+    include: {
+      deliveryboy: true,
+    },
+  })  
+  res.json(result)
+} catch (error) {
+    res.json ({error: error})  
+}
+}
+
+//delete deliveryboy user
+exports.deletedeluser = async(req, res, next) => {
+    try {    
+        const result = await prisma.user.update({
+            where: {
+              delivery_guy_detail_id: 3,
+            },
+            data: {
+              deliveryboy: {
+                deleteMany: 
+                { }
+              },
+            },
+            include: {
+              deliveryboy: true,
+            },
+          })
+  res.json(result)
+} catch (error) {
+    res.json ({error: error})  
+}
+}
+
+// connect create
+exports.connectdeluser = async(req, res, next) => {
+  try {
+    const {name, 
+      email,
+      password,
+      remember_token,
+      auth_token,
+      phone,
+      default_address_id,
+      delivery_pin,
+      delivery_guy_detail_id,
+      avatar,
+      is_active,
+      tax_number,
+      user_ip}  = req.body
+    const result = await prisma.user.create({
+      data: {
+        name: name,
+                email: email,
+                password: password,
+                remember_token: remember_token,
+                auth_token: auth_token,
+                phone: phone,
+                default_address_id: default_address_id,
+                delivery_pin: delivery_pin,
+                avatar: avatar,
+                is_active: is_active,
+                tax_number: tax_number,
+                user_ip: user_ip,
+        deliveryboy: {
+          connect: { 
+            id: 6
+           },
+        },
+      },
+      include: {
+        deliveryboy: true, // Include all posts in the returned object
+      },
+    })
+
+    res.json(result)
+  } catch (error) {
+      res.json ({error: error}) 
+      console.log(error) 
+  }
+  }
+
+ 

@@ -28,7 +28,7 @@ model User {
   is_active Int @default(1) @db.TinyInt()
   tax_number String ?
   user_ip String ?
-  
+  order Orders ? 
 }
 
 model Deliveryguydetails{
@@ -52,4 +52,93 @@ model Deliveryguydetails{
   post User ?
   
 
+}
+
+model Restaurants{
+  id       Int   @id @db.UnsignedInt  @default(autoincrement()) 
+  name     String @db.VarChar(191)
+  description  String? @db.VarChar(191)
+  location_id  String? @db.VarChar(191) 
+  image       String? @db.VarChar(191)
+  rating     String? @db.VarChar(191)
+  delivery_time  String? @db.VarChar(191)
+  price_range   String? @db.VarChar(191)
+  is_pureveg   Int @db.TinyInt @default(0)
+  createdAt DateTime ? @default(now())
+  updatedAt DateTime ?  @updatedAt
+  slug   String? @db.VarChar(191)
+  placeholder_image  String? @db.VarChar(191)
+  latitude   String? @db.VarChar(191)
+  longitude   String? @db.VarChar(191)
+  certificate  String? @db.VarChar(191)
+  restaurant_charges   Decimal ?  @db.Decimal(20,2)
+  delivery_charges   Decimal ?  @db.Decimal(20,2)
+  address  String @db.Text()
+  pincode  String? @db.VarChar(191)
+  landmark  String ?  @db.Text()
+  sku    String @db.VarChar(191)
+  is_active   Int @db.TinyInt @default(0)
+  is_accepted  Int @db.TinyInt @default(0)
+  is_featured  Int @db.TinyInt @default(0)
+  commision_rate Decimal @db.Decimal(8,2) @default(0.00)
+  delivery_type  Int @default(1)
+  delivery_radius  Decimal  @db.Decimal(8,2) @default(10.00)
+  delivery_charge_type  String? @db.VarChar(191) @default("FIXED")
+  base_delivery_charge  Decimal ? @db.Decimal(20,2)
+  base_delivery_distance Int  ?
+  extra_delivery_charge   Decimal ?  @db.Decimal(20,2)
+  extra_delivery_distance  Int ?
+  min_order_price   Decimal  @db.Decimal(20,2) @default(0.00)
+  is_notifiable   Int ? @db.TinyInt @default(0)
+  auto_acceptable   Int @db.TinyInt @default(0)
+  schedule_data    String ? @db.LongText()
+  is_schedulable   Int @db.TinyInt @default(0)
+  order_column    Int ?
+  custom_message String ? @db.LongText()
+  is_orderscheduling   Int @db.TinyInt @default(0)
+  branch_id   Int ?
+  ordersid Orders ?
+}
+
+model Orders{
+id       Int   @id @db.UnsignedInt  @default(autoincrement()) 
+unique_order_id  String @db.VarChar(191)
+orderstatus_id  Int @default(1)
+orderid_one   User  @relation(fields: [user_id], references: [id])
+user_id Int @unique @db.UnsignedInt
+coupon_name String? @db.VarChar(191)
+location  String ? @db.MediumText
+address String  @db.VarChar(191)
+tax Decimal ? @db.Decimal(20,2)
+restaurant_charge Decimal ? @db.Decimal(20,2)
+delivery_charge Decimal ?  @db.Decimal(20,2)
+total Decimal  @db.Decimal(20,2)
+createdAt DateTime ? @default(now())
+updatedAt DateTime ?  @updatedAt
+payment_mode String  @db.VarChar(191)
+order_comment String ? @db.Text
+orderid_two   Restaurants  @relation(fields: [restaurant_id], references: [id])
+restaurant_id Int @unique @db.UnsignedInt
+transaction_id String ? @db.Text 
+delivery_type Int @default(1)
+payable Decimal @db.Decimal(20,0) @default(0.00)
+wallet_amount Decimal ? @db.Decimal(8,2)
+tip_amount Decimal ? @db.Decimal(8,2)
+tax_amount Decimal ? @db.Decimal(8,2)
+coupon_amount Decimal ? @db.Decimal(8,2)
+coupon_isrestaurant Int @db.TinyInt @default(1)
+sub_total Decimal ? @db.Decimal(8,2)
+cash_change_amount Int ?
+restaurant_tax String ? @db.VarChar(255)
+online_payment_status String ? @db.Text
+rain_charge Decimal @db.Decimal(20,2) @default(0.00)
+extra_charge Decimal @db.Decimal(20,2) @default(0.00)
+extra_title String ? @db.VarChar(191) @default("Rain Surge")
+}
+
+model Userlogin{
+  id    Int    @id @default(autoincrement())
+  name   String?
+  email  String @unique
+  password String
 }

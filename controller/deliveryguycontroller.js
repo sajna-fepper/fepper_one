@@ -73,7 +73,7 @@ exports.updatePost = async(req, res, next) => {
         heading,
         tip_commision_rate,
         status} = req.body
-    try {
+    try {8
     const {name,
         age,
         gender,
@@ -158,21 +158,27 @@ exports.deletePost = async(req, res, next) => {
     }
 }
 
-//get user with delivery guyid
-exports.getuser = async(req, res, next) => {
-    try {
-const result = await prisma.deliveryguydetails.findMany({
-    where: {
-      id: "4"
-    },
-    include: {
-   post: true, // All posts where authorId == 20
-    },
-  });
-  res.json(result)
-    } catch (error) {
-        res.json ({error: error})   
-    }
-   
+ //simple grouping
 
+ exports.group = async(req, res, next) => {
+    const {id} = req.body;
+
+    try {
+    
+    
+      const result = await prisma.deliveryguydetails.groupBy({
+        by: 'age',
+        _sum: {
+          max_accept_delivery_limit: true,
+          
+        },
+      })
+    
+    res.json(result)
+    console.log(result)
+    
+    } catch (error) {
+        res.json ({error: error})
+        console.log(error)
+    }
 }
