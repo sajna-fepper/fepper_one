@@ -4,7 +4,7 @@ const router = express.Router()
 const { createPost, updatePost, deletePost, getPost, 
     getaPost, filter, getuser, 
     createuserdel , updatedeluser , deletedeluser,
-    connectdeluser} = require('../controller/usercontroller')
+    connectdeluser, signup, login, logout} = require('../controller/usercontroller')
 
 
 router.route('/user/create').post(createPost)
@@ -28,6 +28,11 @@ router.route('/user/updateud').post(updatedeluser)
 router.route('/user/deleteud').post(deletedeluser)
 
 router.route('/user/connectud').post(connectdeluser)
+
+router.route('/user/signup').post(signup)
+router.route('/user/login').post(login)
+router.route('/user/logout').get(logout)
+
 
 
 module.exports = router

@@ -13,7 +13,7 @@ datasource db {
 model User {
   id       Int   @id @db.UnsignedInt  @default(autoincrement())
   name     String @db.VarChar(191)
-  email     String ? @db.VarChar(191)
+  email     String ? @unique @db.VarChar(191) 
   password  String @db.VarChar(191)
   remember_token String ? @db.VarChar(100)
   createdAt DateTime ? @default(now())
@@ -22,8 +22,8 @@ model User {
   phone String  @unique @db.VarChar(191)
   default_address_id Int ? @default(0)
   delivery_pin String ?
-  deliveryboy   Deliveryguydetails @relation(fields: [delivery_guy_detail_id], references: [id])
-  delivery_guy_detail_id Int  @db.UnsignedInt @unique
+  deliveryboy   Deliveryguydetails  @relation(fields: [delivery_guy_detail_id], references: [id])
+  delivery_guy_detail_id Int   @db.UnsignedInt @unique
   avatar String ? @db.Text()
   is_active Int @default(1) @db.TinyInt()
   tax_number String ?
@@ -141,4 +141,5 @@ model Userlogin{
   name   String?
   email  String @unique
   password String
+  auth_token String ? @db.LongText 
 }

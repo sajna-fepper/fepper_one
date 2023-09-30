@@ -12,9 +12,9 @@ const isLoggedin = async(req, res, next) => {
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        req.userlogin = await prisma.userlogin.findUnique({
+        req.user = await prisma.user.findUnique({
             where: {
-                id: decoded.userloginId
+                id: decoded.user
             }
         })
         next()

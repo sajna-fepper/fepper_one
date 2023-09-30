@@ -1,4 +1,5 @@
 const prisma = require('../prisma/index')
+const cookieToken = require("../utils/cookieToken");
 
 //create a new post on fepper
 
@@ -385,4 +386,126 @@ exports.connectdeluser = async(req, res, next) => {
   }
   }
 
+//user sign up
+
+exports.signup = async (req, res, _next) => {
+  try {
+    const { name, 
+      email,
+      password,
+      remember_token,
+      phone,
+      default_address_id,
+      delivery_pin,
+      delivery_guy_detail_id,
+      avatar,
+      is_active,
+      tax_number,
+      user_ip } = req.body;
+
+    //check
+    if (!name || !email || !password || !phone) {
+      throw new Error("please provide all feilds");
+    }
+
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password,
+        remember_token,
+        phone,
+        default_address_id,
+        delivery_pin,
+        avatar,
+        is_active,
+        tax_number,
+        user_ip,
+            
+            deliveryboy: {
+                create: 
+                  { name: "shamil",
+                  age: "19",
+                  gender: "male",
+                  photo: "thfrr",
+                  description: "auth_tokenfgd",
+                  vehicle_number: "6555",
+                  commision_rate: 3.5,
+                  is_notifiable: 6,
+                  max_accept_delivery_limit: 6,
+                  delivery_lat: "afnr",
+                  delivery_long: "0",
+                  heading: "95",
+                  tip_commision_rate: 2.2,
+                  status:0},
+                
+              },
+              
+    
+    }
+  });
+
+    //send user
+    const auth_token = cookieToken(user, res);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        auth_token,
+      },
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
  
+//user login
+exports.login = async (req, _res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      throw new Error("please provide email and password");
+    }
+
+    //find a user based on email
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    //when there is no user
+    if (!user) {
+      throw new Error("user not found");
+    }
+
+    //when password is not match
+    if (user.password !== password) {
+      throw new Error("Invalid password");
+    }
+    //user is there and validation
+   const auth_token = cookieToken(user, _res);
+    
+    await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          auth_token,
+        },
+      });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+//logout user
+exports.logout = async (_req, res, _next) => {
+  try {
+    res.clearCookie("token");
+    res.json({
+      success: true,
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
